@@ -3,6 +3,7 @@
  */
 
 import { ScanStatus, log } from 'wechaty'
+import { FriendshipImpl } from 'wechaty/impls'
 
 /* on scan */
 export const onScan = (qrcode: any, status: ScanStatus) => {
@@ -27,4 +28,15 @@ export const onLogin = (user: any) => {
 /* on logout */
 export const onLogout = (user: any, reason: any) => {
   log.info(`${user} logout, reason: ${reason}`)
+}
+
+/* on friendship */
+export const onFriendship = async (friendship: FriendshipImpl) => {
+  switch (friendship.type()) {
+    case FriendshipImpl.Type.Receive:
+      await friendship.accept()
+      break
+    case FriendshipImpl.Type.Confirm:
+      break
+  }
 }

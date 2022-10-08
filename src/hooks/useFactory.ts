@@ -24,12 +24,15 @@ export class CommandFactory {
       case '/weather':
       case '/w':
         return await useWeather(this.msg)
+
+      case (/^\/w.*:/g.test(this.command) ? this.command : ''):
+        return await useWeather(this.msg, true)
+
       /* 机器人介绍 */
       case '/start':
       case '/s':
       case '/help':
         return BOT_INTRODUCTION
-
       default:
         return 'command not found'
     }

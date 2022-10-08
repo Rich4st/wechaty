@@ -3,9 +3,11 @@ import { getWeatherAPI } from '../../api/index'
 import { API_KEY } from '../../constants/index'
 import type { IWeather } from '../../types/index'
 
-export const useWeather = async (msg: Message) => {
+export const useWeather = async (msg: Message, isSearch = false) => {
   try {
-    const city = <string>msg.talker().city() ?? '厦门'
+    let city = <string>msg.talker().city() ?? '厦门'
+    if (isSearch)
+      city = msg.text().split(':')[1]
     const { newslist } = await getWeatherAPI({ key: API_KEY, city })
     const tomorrowWeather = <IWeather>newslist[1]
     const { date } = tomorrowWeather
