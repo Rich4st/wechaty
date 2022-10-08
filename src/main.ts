@@ -1,5 +1,6 @@
 import { WechatyBuilder } from 'wechaty'
-import { onLogin, onLogout, onScan } from './hooks/index'
+import type { Message } from 'wechaty'
+import { onLogin, onLogout, onMessage, onScan } from './hooks/index'
 
 const bot = WechatyBuilder.build({
   name: 'puppet-wechat',
@@ -12,8 +13,13 @@ const bot = WechatyBuilder.build({
 bot.on('scan', onScan)
   .on('login', onLogin)
   .on('logout', onLogout)
+  .on('message', async (msg: Message) => {
+    if (msg.text().startsWith('/'))
+      await onMessage(msg)
+  })
 
 /* start bot */
 bot.start().then(() => {
-  console.log('✨ you bot started.')
+  console.log('✨ your bot started.')
 })
+
