@@ -27,4 +27,3 @@ bot.start().then(async () => {
 
   await useMission(bot)
 })
-
