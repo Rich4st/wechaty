@@ -2,8 +2,7 @@ import { WechatyBuilder } from 'wechaty'
 import type { Message } from 'wechaty'
 import type { WechatyInterface } from 'wechaty/impls'
 import { onFriendship, onLogin, onLogout, onMessage, onScan } from './hooks/index'
-import { useMission } from './hooks/mission/index'
-
+import { useMission, useMissionByCustom } from './hooks/mission/index'
 const bot: WechatyInterface = WechatyBuilder.build({
   name: 'puppet-wechat',
   puppetOptions: {
@@ -17,8 +16,12 @@ bot.on('scan', onScan)
   .on('logout', onLogout)
   .on('friendship', onFriendship)
   .on('message', async (msg: Message) => {
-    if (msg.text().startsWith('/'))
-      await onMessage(msg)
+    if (msg.text().startsWith('/')) {
+      if (msg.text().startsWith('/m-'))
+        await useMissionByCustom(bot, msg)
+      else
+        await onMessage(msg)
+    }
   })
 
 /* start bot */

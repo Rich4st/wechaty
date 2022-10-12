@@ -22,6 +22,7 @@
     "@antfu/eslint-config": "^0.27.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.8.3",
+    "@types/node-schedule": "^2.1.0",
     "eslint": "^8.24.0"
   }
 }
