@@ -12,6 +12,7 @@ export const useWeather = async (msg: Message, isSearch = false) => {
     const tomorrowWeather = <IWeather>newslist[1]
     const { date } = tomorrowWeather
     const weatherStr = `
+    🤖:
     📅 ${date}
     🏙 ${city}
     🌤 ${tomorrowWeather.weather}
