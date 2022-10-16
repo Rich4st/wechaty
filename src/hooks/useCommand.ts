@@ -15,7 +15,7 @@ export class CommandFactory {
   /* excute Room command */
   async excuteRoom() {
     const room = this.msg.room()
-    const { setScheduleJob } = useMission()
+    const { setScheduleJob, getScheDuleJob } = useMission()
     const command: string = this.msg.text()
     switch (command) {
       /* weather forest */
@@ -27,6 +27,11 @@ export class CommandFactory {
       /* weather search */
       case (/^\/w.*:/g.test(command) ? command : ''):
         await room.say(await useWeather(this.msg, true))
+        break
+
+      /* get my schedule job */
+      case '/gm':
+        await getScheDuleJob(this.msg)
         break
 
       /* schedule job */
@@ -49,7 +54,7 @@ export class CommandFactory {
   async excuteContact() {
     const contact: Message = this.msg
     const command: string = this.msg.text()
-    const { setScheduleJob } = useMission()
+    const { setScheduleJob, getScheDuleJob } = useMission()
     switch (command) {
       /* weather forest */
       case '/weather':
@@ -60,6 +65,11 @@ export class CommandFactory {
       /* weather search */
       case (/^\/w.*:/g.test(command) ? command : ''):
         await contact.say(await useWeather(this.msg, true))
+        break
+
+      /* get my schedule job */
+      case '/gm':
+        await getScheDuleJob(this.msg)
         break
 
       /* schedule job */

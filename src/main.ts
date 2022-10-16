@@ -1,7 +1,8 @@
 import type { Message } from 'wechaty'
 import { WechatyBuilder } from 'wechaty'
 import type { WechatyInterface } from 'wechaty/impls'
-import { useBot, useMessage } from './hooks/index'
+import { useBot, useMessage, useMission } from './hooks/index'
+import { BOT_NAME } from './constants/index'
 
 const bot: WechatyInterface = WechatyBuilder.build({
   name: 'puppet-wechat',
@@ -23,5 +24,7 @@ bot.on('scan', onScan)
 
 /* start bot */
 bot.start().then(async () => {
-  console.log('✨ your bot started.')
+  console.log(`✨ ${BOT_NAME} is online now.`)
+  const { excuteScheduleJob } = useMission()
+  await excuteScheduleJob(bot)
 })
