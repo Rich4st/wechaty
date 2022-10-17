@@ -1,7 +1,6 @@
 import type { Message, Wechaty } from 'wechaty'
 import { BOT_INTRODUCTION } from '../constants'
-import { useWeather } from './weather/useWeather'
-import { useMission } from './mission/useMission'
+import { useCurriculum, useMission, useWeather } from './index'
 
 export class CommandFactory {
   private bot: Wechaty
@@ -16,6 +15,7 @@ export class CommandFactory {
   async excuteRoom() {
     const room = this.msg.room()
     const { setScheduleJob, getScheDuleJob } = useMission()
+    const { getCurriculum } = useCurriculum()
     const command: string = this.msg.text()
     switch (command) {
       /* weather forest */
@@ -32,6 +32,13 @@ export class CommandFactory {
       /* get my schedule job */
       case '/gm':
         await getScheDuleJob(this.msg)
+        break
+
+      /* get curriculum */
+      case '/tod':
+      case '/tall':
+      case '/tom':
+        await getCurriculum(this.msg)
         break
 
       /* schedule job */
@@ -54,6 +61,7 @@ export class CommandFactory {
   async excuteContact() {
     const contact: Message = this.msg
     const command: string = this.msg.text()
+    const { getCurriculum } = useCurriculum()
     const { setScheduleJob, getScheDuleJob } = useMission()
     switch (command) {
       /* weather forest */
@@ -70,6 +78,12 @@ export class CommandFactory {
       /* get my schedule job */
       case '/gm':
         await getScheDuleJob(this.msg)
+        break
+
+      /* get curriculum */
+      case '/tod':
+      case '/tom':
+        await getCurriculum(this.msg)
         break
 
       /* schedule job */
