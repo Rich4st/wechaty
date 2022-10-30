@@ -1,2 +1,4 @@
 node_modules
 puppet-wechat.memory-card.json
+Dockerfile
+dist
