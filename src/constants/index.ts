@@ -1,5 +1,6 @@
 export const API_KEY = 'fcda2080d1589041c9207cf5d84a1c73'
 export const BOT_NAME = 'Lil J'
+export const ADMIN_NAME = 'Rich4$t'
 export const AVATAR_LIST = ['👨‍🎤', '🕵️', '👮', '🧑‍💻', '🧑‍🎓', '🥷', '👩‍🚀', '🦹‍♀️', '🦸‍♀️', '🧑‍🔧', '👨‍🏭', '🧛', '🧟', '🧔', '👨‍🎨', '👨‍🔬']
 export const BOT_INTRODUCTION = `
 🤖:我是Lil J,为您提供以下服务:
