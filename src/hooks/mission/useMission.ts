@@ -83,7 +83,7 @@ const useMission = () => {
       const name = msg.talker().name()
       const myJob = scheduleJobs.filter((job: IScheduleJob) => job.name === name)
       if (myJob.length === 0) {
-        await msg.say(msgTemplate(name, '您还没有设置定时消息哦!'))
+        await msg.say(msgTemplate(name, '您还没有设置定时消息哦~'))
         return
       }
       await msg.say(scheduleJobsTemplate(myJob))

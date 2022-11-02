@@ -16,7 +16,7 @@ export class CommandFactory {
     const room = this.msg.room()
     const { setScheduleJob, getScheDuleJob } = useMission()
     const { getCurriculum } = useCurriculum()
-    const { getAllMembers } = useRoom()
+    const { getAllMembers, qAllMembers } = useRoom()
     const command: string = this.msg.text()
     switch (command) {
       /* weather forest */
@@ -38,6 +38,10 @@ export class CommandFactory {
       /* get all members */
       case '/members':
         await getAllMembers(room)
+        break
+
+      case '/all':
+        await qAllMembers(room)
         break
 
       /* get curriculum */

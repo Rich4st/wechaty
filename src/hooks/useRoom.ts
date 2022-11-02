@@ -9,7 +9,15 @@ export const useRoom = () => {
     await room.say(membersMsgTemplate(memberNames))
   }
 
+  /* @ 所有人 */
+  const qAllMembers = async (room: Room) => {
+    const members: Contact[] = await room.memberAll()
+    const memberNames: string[] = members.filter((member: Contact) => member.name() !== BOT_NAME).map((member: Contact) => `@${member.name()} `)
+    await room.say(memberNames.join(''))
+  }
+
   return {
     getAllMembers,
+    qAllMembers,
   }
 }
