@@ -1,9 +1,6 @@
-import { resolve } from 'path'
 import type { Message, Wechaty } from 'wechaty'
-import { ADMIN_NAME, BOT_INTRODUCTION } from '../constants'
-import type { ICustomService } from '../types'
-import { useFse } from '../utils'
-import { useCurriculum, useCustomService, useMission, useRoom, useWeather } from './index'
+import { BOT_INTRODUCTION } from '../constants'
+import { useCurriculum, useMission, useRoom, useWeather } from './index'
 
 export class CommandFactory {
   private bot: Wechaty
@@ -68,59 +65,11 @@ export class CommandFactory {
 
   /* excute Contact command */
   async excuteContact() {
-    const csConfigDir = resolve(__dirname, './config/config.json')
-
-    // if (this.msg.text().startsWith('/exit')) {
-    //   fse.writeJSONSync(csConfigDir, { name: this.msg.talker().name(), isCS: false })
-    //   this.msg.say('🌟 退出人工服务')
-    // }
-
-    // const isCs = await fse.readJsonSync(csConfigDir)
-
-    // if (isCs.isCS) {
-    //   if (this.msg.talker().name() === ADMIN_NAME)
-    //     (await this.bot.Contact.find({ name: isCs.name })).say(this.msg.text())
-    //   else
-    //     (await this.bot.Contact.find({ name: ADMIN_NAME })).say(this.msg.text())
-    //   return
-    // }
-    const { fseExist, fseCurrent } = useFse()
     const contact: Message = this.msg
-    const { enterCustomService, exitCustomService } = useCustomService(this.msg, this.bot)
-
-    /* 退出人工客服模式 */
-    if (contact.text().startsWith('/exit'))
-      await exitCustomService()
-
-    /* 进入人工客服 */
-    let currentContact: ICustomService | null = null
-    if (contact.talker().name() !== ADMIN_NAME)
-      currentContact = await fseExist(csConfigDir, contact.talker().name())
-    else
-      currentContact = await fseExist(csConfigDir, contact.talker().name(), true)
-
-    if ((Object.keys(currentContact).length !== 0 && currentContact.isCS)) {
-      if (contact.talker().name() !== ADMIN_NAME) {
-        const ADMIN = this.bot.Contact.find({ name: ADMIN_NAME })
-        await (await ADMIN).say(`来自${contact.talker().name()}: ${contact.text()}`)
-        return
-      }
-      else {
-        const CUSTOMER = await fseCurrent(csConfigDir)
-        await (await this.bot.Contact.find({ name: CUSTOMER })).say(contact.text())
-        return
-      }
-    }
-
     const command: string = this.msg.text()
     const { getCurriculum } = useCurriculum()
     const { setScheduleJob, getScheDuleJob } = useMission()
-
     switch (command) {
-      case '/r':
-        await enterCustomService()
-        break
-
       /* weather forest */
       case '/weather':
       case '/w':
