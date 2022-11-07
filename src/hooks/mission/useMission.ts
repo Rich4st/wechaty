@@ -1,5 +1,6 @@
 import { resolve } from 'path'
 import schedule from 'node-schedule'
+import { nanoid } from 'nanoid'
 import type { Contact, Message, Room, Wechaty } from 'wechaty'
 import fse from 'fs-extra'
 import type { IScheduleJob } from '../../types/index'
@@ -17,7 +18,9 @@ const useMission = () => {
 
     /* write into file */
     await fse.readJSON(resolve(__dirname, './ScheduleJob.json')).then(async (ScheduleJobs: IScheduleJob[]) => {
+      const id = nanoid()
       const newJob: IScheduleJob = {
+        id,
         date: `${timer[0]}:${timer[1]}`,
         dayOfWeek: timer[2],
         name,
@@ -78,6 +81,22 @@ const useMission = () => {
     })
   }
 
+  const removeScheduleJob = async (msg: Message) => {
+    const payload = msg.text().split('-')
+    const deleteId = payload[1].toLowerCase()
+    const oldData = fse.readJSONSync(resolve(__dirname, './ScheduleJob.json')) as IScheduleJob[]
+
+    const newData = oldData.filter((el: IScheduleJob) => {
+      if (el.id.startsWith(deleteId))
+        return el
+      return null
+    })
+
+    fse.writeJSONSync(resolve(__dirname, './ScheduleJob.json'), newData)
+
+    await msg.say(msgTemplate(msg.talker().name(), `您的定时消息${deleteId}已删除!🥳`))
+  }
+
   const getScheDuleJob = async (msg: Message) => {
     await fse.readJSON(resolve(__dirname, './ScheduleJob.json')).then(async (scheduleJobs: IScheduleJob[]) => {
       const name = msg.talker().name()
@@ -94,6 +113,7 @@ const useMission = () => {
     setScheduleJob,
     excuteScheduleJob,
     getScheDuleJob,
+    removeScheduleJob,
   }
 }
 

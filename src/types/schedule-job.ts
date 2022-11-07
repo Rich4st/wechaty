@@ -1,4 +1,5 @@
 export interface IScheduleJob {
+  id?: string
   date: string
   dayOfWeek?: number
   content: string

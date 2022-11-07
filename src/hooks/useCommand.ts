@@ -14,7 +14,7 @@ export class CommandFactory {
   /* excute Room command */
   async excuteRoom() {
     const room = this.msg.room()
-    const { setScheduleJob, getScheDuleJob } = useMission()
+    const { setScheduleJob, getScheDuleJob, removeScheduleJob } = useMission()
     const { getCurriculum } = useCurriculum()
     const { getAllMembers, qAllMembers } = useRoom()
     const command: string = this.msg.text()
@@ -33,6 +33,10 @@ export class CommandFactory {
       /* get my schedule job */
       case '/gm':
         await getScheDuleJob(this.msg)
+        break
+
+      case (/^\/d.*-/g.test(command) ? command : ''):
+        removeScheduleJob(this.msg)
         break
 
       /* get all members */
