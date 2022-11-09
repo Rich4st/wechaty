@@ -76,7 +76,7 @@ export class CommandFactory {
     const contact: Message = this.msg
     const command: string = this.msg.text()
     const { getCurriculum } = useCurriculum()
-    const { setScheduleJob, getScheDuleJob } = useMission()
+    const { setScheduleJob, getScheDuleJob, removeScheduleJob } = useMission()
     switch (command) {
       /* weather forest */
       case '/weather':
@@ -92,6 +92,10 @@ export class CommandFactory {
       /* get my schedule job */
       case '/gm':
         await getScheDuleJob(this.msg)
+        break
+
+      case (/^\/d.*-/g.test(command) ? command : ''):
+        removeScheduleJob(this.msg)
         break
 
       /* get curriculum */

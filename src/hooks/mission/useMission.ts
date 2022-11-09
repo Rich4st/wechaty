@@ -9,6 +9,7 @@ import { dateSplit, msgTemplate, scheduleJobsTemplate } from '../../utils/index'
 const useMission = () => {
   const setScheduleJob = async (msg: Message, bot?: Wechaty) => {
     await msg.say(msgTemplate(msg.talker().name(), '您的定时消息设置成功!🥳'))
+    const id = nanoid()
     const room = msg.room()// msg from room
     const payload = msg.text().split('-') // split command
     const timer = dateSplit(payload[1]) // get timer
@@ -18,14 +19,14 @@ const useMission = () => {
 
     /* write into file */
     await fse.readJSON(resolve(__dirname, './ScheduleJob.json')).then(async (ScheduleJobs: IScheduleJob[]) => {
-      const id = nanoid()
+      const roomTopic = await room?.topic() || ''
       const newJob: IScheduleJob = {
         id,
         date: `${timer[0]}:${timer[1]}`,
         dayOfWeek: timer[2],
         name,
         content,
-        room: await room.topic() ?? undefined,
+        room: roomTopic,
         to: toContact,
       }
       try {
@@ -38,7 +39,7 @@ const useMission = () => {
     })
 
     if (room) {
-      schedule.scheduleJob(`${timer[2] ?? 0} ${timer[1]} ${timer[0]} * * *`, async () => {
+      schedule.scheduleJob(id, `${timer[2] ?? 0} ${timer[1]} ${timer[0]} * * *`, async () => {
         if (toContact)
           await room.say(`@${toContact}, ${content}`)
         else
@@ -87,8 +88,10 @@ const useMission = () => {
     const oldData = fse.readJSONSync(resolve(__dirname, './ScheduleJob.json')) as IScheduleJob[]
 
     const newData = oldData.filter((el: IScheduleJob) => {
-      if (el.id.startsWith(deleteId))
+      if (el.id.startsWith(deleteId)) {
+        schedule.scheduledJobs[el.id]?.cancel()
         return el
+      }
       return null
     })
 
