@@ -1,6 +1,6 @@
 import type { Message, Wechaty } from 'wechaty'
 import { BOT_INTRODUCTION } from '../constants'
-import { useCurriculum, useMission, useRoom, useWeather } from './index'
+import { useChatGPT, useCurriculum, useMission, useRoom, useWeather } from './index'
 
 export class CommandFactory {
   private bot: Wechaty
@@ -19,6 +19,11 @@ export class CommandFactory {
     const { getAllMembers, qAllMembers } = useRoom()
     const command: string = this.msg.text()
     switch (command) {
+      /* chatgpt */
+      case (/^\$.*$/g.test(command) ? command : ''):
+        await useChatGPT(this.msg, true)
+        break
+
       /* weather forest */
       case '/weather':
       case '/w':
@@ -78,6 +83,11 @@ export class CommandFactory {
     const { getCurriculum } = useCurriculum()
     const { setScheduleJob, getScheDuleJob, removeScheduleJob } = useMission()
     switch (command) {
+      /* chatgpt */
+      case (/^\$.*$/g.test(command) ? command : ''):
+        await useChatGPT(this.msg)
+        break
+
       /* weather forest */
       case '/weather':
       case '/w':

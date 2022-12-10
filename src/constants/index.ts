@@ -9,5 +9,6 @@ export const BOT_INTRODUCTION = `
 ✂️ 输入"/d-消息id",删除您的定时信息
 👨‍👩‍👦‍👦 输入"/members",列出当前群聊所有成员
 📢 输入"/all",@所有人
+🌐 以"$"开头的消息,将会被转发到ChatGPT
 🛠 待开发
 `
